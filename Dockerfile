@@ -14,9 +14,9 @@ RUN <<EOT
 EOT
 
 FROM base AS pg_vector
-ARG VERSION=0.4.0
+ARG VERSION=0.3.0
 RUN <<EOT
-  package="vectors-pg17_${VERSION}_amd64.deb"
+  package="vectors-pg17_${VERSION}_amd64_vectors.deb"
   wget "https://github.com/tensorchord/pgvecto.rs/releases/download/v${VERSION}/${package}"
   dpkg -x "${package}" /
 EOT
