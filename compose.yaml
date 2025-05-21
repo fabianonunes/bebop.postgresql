@@ -1,0 +1,26 @@
+configs:
+  postgresql.conf:
+    content: |
+      shared_preload_libraries='vectors,vchord'
+
+services:
+  postgres:
+    image: localhost/postgres
+    build:
+      context: .
+    network_mode: host
+    configs:
+    - mode: 0444
+      source: postgresql.conf
+      target: /etc/postgresql/postgresql.conf
+    environment:
+      POSTGRES_PASSWORD: postgres
+      TZ: Etc/UTC
+    volumes:
+    - data:/var/lib/postgresql/data
+    command:
+    - -c
+    - config_file=/etc/postgresql/postgresql.conf
+
+volumes:
+  data:
