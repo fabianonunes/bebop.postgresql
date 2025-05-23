@@ -13,14 +13,6 @@ RUN <<EOT
   dpkg -x "${package}" /
 EOT
 
-FROM base AS pg_vector
-ARG VERSION=0.3.0
-RUN <<EOT
-  package="vectors-pg17_${VERSION}_amd64_vectors.deb"
-  wget "https://github.com/tensorchord/pgvecto.rs/releases/download/v${VERSION}/${package}"
-  dpkg -x "${package}" /
-EOT
-
 FROM base AS vchord
 ARG VERSION=0.3.0
 RUN <<EOT
@@ -42,9 +34,6 @@ EOT
 # pg_search
 COPY --from=pg_search /usr/lib/postgresql/17/lib /usr/lib/postgresql/17/lib
 COPY --from=pg_search /usr/share/postgresql/17/extension /usr/share/postgresql/17/extension
-# pg_vector
-COPY --from=pg_vector /usr/lib/postgresql/17/lib /usr/lib/postgresql/17/lib
-COPY --from=pg_vector /usr/share/postgresql/17/extension /usr/share/postgresql/17/extension
 # vectorchord
 COPY --from=vchord /usr/lib/postgresql/17/lib /usr/lib/postgresql/17/lib
 COPY --from=vchord /usr/share/postgresql/17/extension /usr/share/postgresql/17/extension
